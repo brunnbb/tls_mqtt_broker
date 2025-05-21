@@ -59,7 +59,7 @@ class Broker:
             try: 
                 return json.loads(data.decode('utf-8'))
             except json.JSONDecodeError as e:
-                print(f'Error decoding message: {e}')
+                print(f'Error decoding message from client at {client_address}: {e}')
                 return {}
         return {}
     
