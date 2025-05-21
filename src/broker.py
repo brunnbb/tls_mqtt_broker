@@ -126,7 +126,17 @@ class Broker:
         self.__send_response(client_socket, response)
         
     def __leave_topic(self, client_socket, client_address, client_data):
-        pass
+        client_id = client_data['client_id']
+        topic = client_data['topic']
+        
+        if client_id in self.clients and topic in self.clients[client_id]:
+            self.clients[client_id].remove(topic)
+            response={'status':'left','topic':topic}
+            self.__send_response(client_socket, response)
+            print(f'[SERVER] Cliet {client_id} left topic {topic}')
+        else:
+            response={'status':'error','message':'Client not subscribed to topic'}
+            self.__send_response(client_socket, response)
 
 if __name__ == '__main__':
     broker = Broker()
