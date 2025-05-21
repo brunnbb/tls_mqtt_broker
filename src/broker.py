@@ -94,7 +94,12 @@ class Broker:
             
         if topic not in self.clients[client_id]:
             self.clients[client_id].append(topic)  
-            self.topics[topic].append(client_id)
+            print(f'[SERVER] Client {client_id} subscribed to topic {topic}')
+            response = {'status':'subscribed', 'topic':topic}
+            self.__send_response(client_socket, response)
+        else:
+            response = {'status':'error', 'message':'Already subscribed to this topic'}
+            self.__send_response(client_socket, response)
     
     def __publish(self, client_socket, client_data):
         client_id = client_data['client_id']
@@ -116,6 +121,7 @@ class Broker:
             if subscriber_socket and topic in self.clients[subscriber]:
                 response = {'status': 'new_message', 'topic': topic, 'message': message}
                 self.__send_response(subscriber_socket, response)
+        # Confirmation for publisher        
         response = {'status':'published', 'topic':topic, 'message':message}
         self.__send_response(client_socket, response)
         
