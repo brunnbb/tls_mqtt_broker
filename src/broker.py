@@ -14,11 +14,13 @@ class Broker:
         self.host = host
         self.port = port
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.lock = threading.Lock()
             
     def run(self):
         self.server_socket.bind((self.host, self.port))
         self.server_socket.listen()
         print(f'[SERVER] listening at {self.host}:{self.port}...')
+        
         try:
             while True:
                 client_socket, client_address = self.server_socket.accept()
@@ -27,31 +29,27 @@ class Broker:
         except KeyboardInterrupt:
             print("\n[SERVER] interrupted")
         finally:
-            if self.server_socket:
-                self.server_socket.close()
+            self.server_socket.close()
                 
     def __handle_client(self, client_socket, client_address):
         try:
-            client_id = ''
+            client_id = None
             while True:
                 client_data = self.__receive_request(client_socket, client_address)
-                if not client_data:
-                    continue
+                """ if not client_data:
+                    continue """
                 cmd = client_data['command']
                 match cmd:
                     case 'indentify':
                         self.__identify_client(client_socket, client_address, client_data)
                     case 'subscribe':
                         self.__subscribe(client_socket, client_data)
-                        return ''
                     case 'publish':
                         self.__publish(client_socket, client_data)
-                        return ''
                     case 'unsubscribe':
                         self.__leave_topic(client_socket, client_address, client_data)
-                        return ''
         except Exception as e:
-            print(f'Error with client {client_address}: {e}')
+            print(f'[ERROR] Exception with client at {client_address}: {e}')
     
     def __receive_request(self, client_socket, client_address) -> dict:
         data = client_socket.recv(1024)
@@ -64,8 +62,10 @@ class Broker:
         return {}
     
     def __send_response(self, client_socket, response_data):
-        response_json = json.dumps(response_data)
-        client_socket.sendall(response_json.encode('utf-8'))
+        try:
+            client_socket.sendall(json.dumps(response_data).encode('utf-8'))
+        except Exception as e:
+            print(f"[ERROR] Failed to send response: {e}")
               
     def __identify_client(self, client_socket, client_address, client_data):
         client_id = client_data['client_id']
@@ -73,8 +73,8 @@ class Broker:
         if client_id not in self.clients:
             self.clients[client_id] = []
             print(f'[SERVER] New client {client_id} identified at {client_address}')
-        
-        print(f'[SERVER] Client {client_id} reconnected at {client_address}')    
+        else:
+            print(f'[SERVER] Client {client_id} reconnected at {client_address}')    
         self.client_sockets[client_id] = client_socket
         self.__send_unread_messages(client_id)
     
