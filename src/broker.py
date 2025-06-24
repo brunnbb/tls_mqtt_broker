@@ -22,7 +22,7 @@ class Broker:
         # Each client and its socket connection and session key
         self.clients_conn: dict[str, dict] = {}
 
-    def run(self):
+    def run(self) -> None:
         try:
             self.clients_pub_keys = load_keys_from_dir("src\\security\\client_keys")
             self.server_socket.bind((self.host, self.port))
