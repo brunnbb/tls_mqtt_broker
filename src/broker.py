@@ -1,143 +1,45 @@
-import socket 
+import socket
 import threading
-import json
+from client_handler import ClientHandler
+from security.auth import load_keys_from_dir
 
 class Broker:
-    # dictionary of topics and the messages at that topic
-    topics: dict[str, list] = {}
-    # dictionary of clients and the topics each chose to subscribe
-    clients: dict[str, list] = {}
-    # dictionary of active clients
-    client_sockets: dict[str, socket.socket] = {}
-    
-    def __init__(self, host='127.0.0.1', port=5000) -> None:
+    def __init__(self, host="127.0.0.1", port=5000) -> None:
         self.host = host
         self.port = port
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.lock = threading.Lock()
-            
-    def run(self):
-        self.server_socket.bind((self.host, self.port))
-        self.server_socket.listen()
-        print(f'[SERVER] listening at {self.host}:{self.port}...')
         
+        # Each client and its public key
+        self.clients_pub_keys: dict[str, str] = {}
+        # Each topic and the keys for each client
+        self.topics_keys: dict[str, dict[str, str]] = {}
+        
+        # Each topic and is messages
+        self.topics: dict[str, list] = {}
+        # Each client that connected and the topics subscribed
+        self.clients: dict[str, list] = {}
+        # Each client and its socket connection and session key
+        self.clients_conn: dict[str, dict] = {}
+
+    def run(self):
         try:
+            self.clients_pub_keys = load_keys_from_dir("src\\security\\client_keys")
+            self.server_socket.bind((self.host, self.port))
+            self.server_socket.listen()
+            print(f"\n[SERVER] listening at {self.host}:{self.port} ...")
             while True:
                 client_socket, client_address = self.server_socket.accept()
-                client_thread = threading.Thread(target=self.__handle_client, args=(client_socket, client_address))
-                client_thread.start()
+                print(
+                    f"\nNew client connected at {client_address[0]}:{client_address[1]}"
+                )
+                handler = ClientHandler(client_socket, client_address, self)
+                thread = threading.Thread(target=handler.handle)
+                thread.start()
         except KeyboardInterrupt:
-            print("\n[SERVER] interrupted")
+            print("\nServer interrupted")
         finally:
             self.server_socket.close()
-                
-    def __handle_client(self, client_socket, client_address):
-        try:
-            client_id = None
-            while True:
-                client_data = self.__receive_request(client_socket, client_address)
-                """ if not client_data:
-                    continue """
-                cmd = client_data['command']
-                match cmd:
-                    case 'indentify':
-                        self.__identify_client(client_socket, client_address, client_data)
-                    case 'subscribe':
-                        self.__subscribe(client_socket, client_data)
-                    case 'publish':
-                        self.__publish(client_socket, client_data)
-                    case 'unsubscribe':
-                        self.__leave_topic(client_socket, client_address, client_data)
-        except Exception as e:
-            print(f'[ERROR] Exception with client at {client_address}: {e}')
-    
-    def __receive_request(self, client_socket, client_address) -> dict:
-        data = client_socket.recv(1024)
-        if data:
-            try: 
-                return json.loads(data.decode('utf-8'))
-            except json.JSONDecodeError as e:
-                print(f'Error decoding message from client at {client_address}: {e}')
-                return {}
-        return {}
-    
-    def __send_response(self, client_socket, response_data):
-        try:
-            client_socket.sendall(json.dumps(response_data).encode('utf-8'))
-        except Exception as e:
-            print(f"[ERROR] Failed to send response: {e}")
-              
-    def __identify_client(self, client_socket, client_address, client_data):
-        client_id = client_data['client_id']
-        
-        if client_id not in self.clients:
-            self.clients[client_id] = []
-            print(f'[SERVER] New client {client_id} identified at {client_address}')
-        else:
-            print(f'[SERVER] Client {client_id} reconnected at {client_address}')    
-        self.client_sockets[client_id] = client_socket
-        self.__send_unread_messages(client_id)
-    
-    def __send_unread_messages(self, client_id):
-        for topic in self.clients[client_id]:
-            if topic in self.topics:
-                for message in self.topics[topic]:
-                    response = {'status': 'unread_message', 'topic': topic, 'message': message}
-                    self.__send_response(self.client_sockets[client_id], response)
-    
-    def __subscribe(self, client_socket, client_data):
-        client_id = client_data['client_id']
-        topic = client_data['topic']
-            
-        if topic not in self.topics:
-            self.topics[topic] = []  
-            
-        if topic not in self.clients[client_id]:
-            self.clients[client_id].append(topic)  
-            print(f'[SERVER] Client {client_id} subscribed to topic {topic}')
-            response = {'status':'subscribed', 'topic':topic}
-            self.__send_response(client_socket, response)
-        else:
-            response = {'status':'error', 'message':'Already subscribed to this topic'}
-            self.__send_response(client_socket, response)
-    
-    def __publish(self, client_socket, client_data):
-        client_id = client_data['client_id']
-        topic = client_data['topic']
-        message = client_data['message']
-        
-        if topic not in self.topics:
-            response = {'status':'error','message':'Topic not found'}
-            self.__send_response(client_socket, response)
-            return  
-        
-        self.topics[topic].append(message)
-        
-        # Sending message for each client subscribed
-        for subscriber in self.clients:
-            if subscriber == client_id:
-                continue     
-            subscriber_socket = self.client_sockets.get(subscriber)
-            if subscriber_socket and topic in self.clients[subscriber]:
-                response = {'status': 'new_message', 'topic': topic, 'message': message}
-                self.__send_response(subscriber_socket, response)
-        # Confirmation for publisher        
-        response = {'status':'published', 'topic':topic, 'message':message}
-        self.__send_response(client_socket, response)
-        
-    def __leave_topic(self, client_socket, client_address, client_data):
-        client_id = client_data['client_id']
-        topic = client_data['topic']
-        
-        if client_id in self.clients and topic in self.clients[client_id]:
-            self.clients[client_id].remove(topic)
-            response={'status':'left','topic':topic}
-            self.__send_response(client_socket, response)
-            print(f'[SERVER] Cliet {client_id} left topic {topic}')
-        else:
-            response={'status':'error','message':'Client not subscribed to topic'}
-            self.__send_response(client_socket, response)
 
-if __name__ == '__main__':
-    broker = Broker()
-    broker.run()
+if __name__ == "__main__":
+    Broker().run()

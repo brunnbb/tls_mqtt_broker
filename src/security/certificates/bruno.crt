@@ -1,0 +1,98 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 4097 (0x1001)
+        Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C=BR, ST=Santa Catarina, O=IFSC (Federal Institute of Santa Catarina)
+        Validity
+            Not Before: Jun 14 16:21:48 2025 GMT
+            Not After : Jun 14 16:21:48 2026 GMT
+        Subject: C=BR, ST=Santa Catarina, O=IFSC, OU=CC, CN=mqtt.broker.bruno.com
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:ae:8e:18:fd:8f:8a:90:06:ab:f5:d9:e0:17:56:
+                    52:b4:2c:e4:a9:cb:d5:db:8e:68:cd:b7:00:77:3c:
+                    d1:0b:22:d2:ab:e9:03:30:b2:04:5c:7b:6e:2b:08:
+                    2f:11:4e:e2:0c:46:f7:d7:11:78:0c:ea:ad:5a:4c:
+                    78:42:89:b4:02:71:91:a7:40:cc:ce:cc:36:54:f5:
+                    cb:ae:47:89:fa:6e:d6:9c:7c:33:d7:2e:04:7e:ed:
+                    8d:c2:be:36:d3:c2:eb:61:78:68:b4:a4:0d:8f:74:
+                    ec:f5:c5:d0:4b:ce:f5:29:d0:5c:85:e1:b6:55:6a:
+                    79:68:db:2d:56:12:2b:1b:c1:c7:64:06:cf:ca:a2:
+                    d8:3a:72:6e:f2:b8:68:47:8e:40:55:23:e4:dc:39:
+                    0e:00:29:69:bd:51:83:26:03:17:3d:5b:6d:81:5f:
+                    29:08:d0:09:88:4f:46:7a:8e:7a:6b:23:37:d5:4f:
+                    92:74:bc:88:fc:a0:46:c8:af:e7:7b:44:07:5b:59:
+                    6b:16:d9:a7:86:77:a4:b0:11:90:7a:9f:dd:a7:bf:
+                    9a:48:45:50:9e:dd:14:a0:81:24:e9:0e:e6:e5:66:
+                    2c:c4:78:69:b1:d8:ae:ea:d3:dd:dc:ab:69:22:b8:
+                    ec:3b:81:c3:32:21:97:98:d2:e2:be:77:26:7b:3d:
+                    3a:3b
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            X509v3 Subject Key Identifier: 
+                2F:9C:88:5A:91:57:31:99:71:D7:A8:BF:C8:95:B0:C5:C9:0E:8B:7F
+            X509v3 Authority Key Identifier: 
+                DF:45:1D:25:EC:0D:78:9F:9C:22:95:C3:3B:EB:01:6A:87:5F:C4:5A
+    Signature Algorithm: sha256WithRSAEncryption
+    Signature Value:
+        9b:a1:2f:fd:d4:94:04:84:cc:53:2b:cf:98:bf:25:b7:ca:61:
+        c2:63:50:9a:c2:57:4e:a7:48:4a:da:7c:31:3c:ef:67:45:6b:
+        2d:7f:bd:ad:ab:d4:2f:00:a2:5e:cc:30:61:41:af:93:04:97:
+        3f:7b:e3:95:86:a7:82:db:c9:61:e2:56:5f:e1:03:05:90:50:
+        e7:07:d7:19:79:bb:a4:bb:dd:de:34:93:75:f6:6d:c6:96:f7:
+        d1:67:7f:93:f8:b0:b6:5c:66:06:83:17:73:34:22:df:11:f7:
+        8e:15:f2:43:d7:92:c9:42:54:7f:f5:36:b9:92:eb:9e:05:f9:
+        c8:98:bf:d1:bd:c2:b2:ed:4b:a8:d5:3b:de:45:13:0c:8c:13:
+        95:50:0b:7c:62:f8:fc:67:7c:d1:ab:be:c1:05:77:5c:a3:ea:
+        07:03:01:1f:67:0c:c0:c9:3f:3d:22:9f:16:40:9c:f4:2e:0d:
+        e3:03:2b:ab:c1:7b:84:e2:43:43:a5:85:42:67:3c:ae:9e:56:
+        95:a9:01:e4:d6:c2:50:c6:14:a8:df:14:57:db:04:ff:33:20:
+        7e:0b:84:10:71:f6:90:25:bb:7b:a4:e9:94:6e:22:93:3e:e5:
+        fa:ce:b9:a6:33:70:6a:ed:0b:13:e0:b7:3c:f1:e2:82:eb:25:
+        4a:f2:e9:01:f6:dc:f9:3a:74:95:b4:64:75:47:3c:56:f5:0b:
+        a7:8c:f1:82:47:2a:b8:df:e9:07:0f:43:3a:5e:95:f4:31:54:
+        d9:8d:be:53:b8:b3:56:94:93:58:77:9b:f5:c4:e7:ef:b5:ca:
+        11:f5:65:28:bb:49:42:20:5c:2b:50:de:be:39:e2:36:7e:91:
+        30:8a:51:9c:bc:56:37:ae:ef:c3:c1:ee:2e:b3:aa:c6:87:33:
+        2e:f5:00:ee:21:0b:8c:38:d2:9b:c7:1f:7c:ff:e2:cf:5d:b3:
+        eb:92:5f:79:1c:eb:c3:ba:f5:8a:2e:92:3c:b8:40:f6:c5:0c:
+        13:1c:f1:c8:b1:ba:14:e0:08:5f:9c:7d:ae:85:c6:19:7e:4c:
+        e3:6f:59:31:fb:bb:e4:68:3e:e6:f2:74:16:5d:17:47:3a:ca:
+        c3:01:6e:4e:70:0b:f1:c6:c8:cc:dd:e2:bc:c9:45:dc:5d:d5:
+        91:31:1f:ea:6e:a5:75:48:72:cc:7c:12:6f:70:c5:d1:16:6f:
+        1d:93:ab:65:cf:92:b9:f8:f1:0d:48:b5:f4:75:e8:5b:df:98:
+        44:2f:1d:52:96:12:96:53:84:2a:95:b4:20:54:1e:03:32:29:
+        ae:dc:28:75:f1:e9:cd:1a:5c:d8:d9:0b:e4:c3:95:4b:51:7b:
+        85:3c:4a:ca:0f:e0:be:89
+-----BEGIN CERTIFICATE-----
+MIIEhjCCAm6gAwIBAgICEAEwDQYJKoZIhvcNAQELBQAwWzELMAkGA1UEBhMCQlIx
+FzAVBgNVBAgMDlNhbnRhIENhdGFyaW5hMTMwMQYDVQQKDCpJRlNDIChGZWRlcmFs
+IEluc3RpdHV0ZSBvZiBTYW50YSBDYXRhcmluYSkwHhcNMjUwNjE0MTYyMTQ4WhcN
+MjYwNjE0MTYyMTQ4WjBiMQswCQYDVQQGEwJCUjEXMBUGA1UECAwOU2FudGEgQ2F0
+YXJpbmExDTALBgNVBAoMBElGU0MxCzAJBgNVBAsMAkNDMR4wHAYDVQQDDBVtcXR0
+LmJyb2tlci5icnVuby5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB
+AQCujhj9j4qQBqv12eAXVlK0LOSpy9XbjmjNtwB3PNELItKr6QMwsgRce24rCC8R
+TuIMRvfXEXgM6q1aTHhCibQCcZGnQMzOzDZU9cuuR4n6btacfDPXLgR+7Y3CvjbT
+wutheGi0pA2PdOz1xdBLzvUp0FyF4bZVanlo2y1WEisbwcdkBs/Kotg6cm7yuGhH
+jkBVI+TcOQ4AKWm9UYMmAxc9W22BXykI0AmIT0Z6jnprIzfVT5J0vIj8oEbIr+d7
+RAdbWWsW2aeGd6SwEZB6n92nv5pIRVCe3RSggSTpDublZizEeGmx2K7q093cq2ki
+uOw7gcMyIZeY0uK+dyZ7PTo7AgMBAAGjTTBLMAkGA1UdEwQCMAAwHQYDVR0OBBYE
+FC+ciFqRVzGZcdeov8iVsMXJDot/MB8GA1UdIwQYMBaAFN9FHSXsDXifnCKVwzvr
+AWqHX8RaMA0GCSqGSIb3DQEBCwUAA4ICAQCboS/91JQEhMxTK8+YvyW3ymHCY1Ca
+wldOp0hK2nwxPO9nRWstf72tq9QvAKJezDBhQa+TBJc/e+OVhqeC28lh4lZf4QMF
+kFDnB9cZebuku93eNJN19m3GlvfRZ3+T+LC2XGYGgxdzNCLfEfeOFfJD15LJQlR/
+9Ta5kuueBfnImL/RvcKy7Uuo1TveRRMMjBOVUAt8Yvj8Z3zRq77BBXdco+oHAwEf
+ZwzAyT89Ip8WQJz0Lg3jAyurwXuE4kNDpYVCZzyunlaVqQHk1sJQxhSo3xRX2wT/
+MyB+C4QQcfaQJbt7pOmUbiKTPuX6zrmmM3Bq7QsT4Lc88eKC6yVK8ukB9tz5OnSV
+tGR1RzxW9QunjPGCRyq43+kHD0M6XpX0MVTZjb5TuLNWlJNYd5v1xOfvtcoR9WUo
+u0lCIFwrUN6+OeI2fpEwilGcvFY3ru/Dwe4us6rGhzMu9QDuIQuMONKbxx98/+LP
+XbPrkl95HOvDuvWKLpI8uED2xQwTHPHIsboU4AhfnH2uhcYZfkzjb1kx+7vkaD7m
+8nQWXRdHOsrDAW5OcAvxxsjM3eK8yUXcXdWRMR/qbqV1SHLMfBJvcMXRFm8dk6tl
+z5K5+PENSLX0dehb35hELx1SlhKWU4QqlbQgVB4DMimu3Ch18enNGlzY2Qvkw5VL
+UXuFPErKD+C+iQ==
+-----END CERTIFICATE-----
