@@ -4,13 +4,15 @@ from cryptography.x509 import Name, NameAttribute, CertificateBuilder
 from cryptography.x509.oid import NameOID
 import datetime
 
-def carregar_chave_publica(caminho_arquivo):
-    with open(caminho_arquivo, "rb") as f:
+# This module signs a csr to generate a crt that a client will be using 
+
+def load_public_key(path: str):
+    with open(path, "rb") as f:
         chave_publica_pem = f.read()
     return serialization.load_pem_public_key(chave_publica_pem)
 
-def carregar_chave_privada(caminho_arquivo):
-    with open(caminho_arquivo, "rb") as f:
+def load_private_key(path: str):
+    with open(path, "rb") as f:
         chave_privada_pem = f.read()
     return serialization.load_pem_private_key(chave_privada_pem, password=None)
 
@@ -44,6 +46,6 @@ if __name__ == '__main__':
     caminho_chave_publica_cliente = r"src\security\client_keys\public_key_4.pem"
     caminho_certificado_saida = r"src\security\certificates\client4.crt"
 
-    chave_privada_servidor = carregar_chave_privada(caminho_chave_privada_servidor)
-    chave_publica_cliente = carregar_chave_publica(caminho_chave_publica_cliente)
+    chave_privada_servidor = load_private_key(caminho_chave_privada_servidor)
+    chave_publica_cliente = load_public_key(caminho_chave_publica_cliente)
     gerar_certificado_assinado(chave_privada_servidor, chave_publica_cliente, caminho_certificado_saida)
