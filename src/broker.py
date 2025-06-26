@@ -42,4 +42,6 @@ class Broker:
             self.server_socket.close()
 
 if __name__ == "__main__":
-    Broker().run()
+    broker = Broker(host="10.151.55.67")
+    broker.run()
+    

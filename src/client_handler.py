@@ -138,7 +138,6 @@ class ClientHandler:
                 self._format_and_send_msg("create", topic, "success")
                 
                 for cli, pub_key in self.broker.clients_pub_keys.items():
-                    #if cli != self.clientId:
                     self._format_and_send_msg('keys', topic, pub_key)
                     data = self._receive_msg()
                     if data:    
