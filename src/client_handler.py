@@ -194,7 +194,7 @@ class ClientHandler:
             self._auth_handshake()
             self._syncronize_msgs()
             while self.running:
-                print("----------------------------------------")
+                print("-"*90)
                 print(f"Topics with msgs: {self.broker.topics}")
                 print(f'Client and topics: {self.broker.clients}')
                 msg = self._receive_msg()
