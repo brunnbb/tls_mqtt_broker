@@ -30,9 +30,7 @@ class Broker:
             print(f"\n[SERVER] listening at {self.host}:{self.port} ...")
             while True:
                 client_socket, client_address = self.server_socket.accept()
-                print(
-                    f"\nNew client connected at {client_address[0]}:{client_address[1]}"
-                )
+                print(f"\nNew client connected at {client_address[0]}:{client_address[1]}")
                 handler = ClientHandler(client_socket, client_address, self)
                 thread = threading.Thread(target=handler.handle)
                 thread.start()
@@ -42,6 +40,6 @@ class Broker:
             self.server_socket.close()
 
 if __name__ == "__main__":
-    broker = Broker(host="10.151.55.67")
+    broker = Broker()
     broker.run()
     

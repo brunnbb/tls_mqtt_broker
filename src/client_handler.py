@@ -18,7 +18,7 @@ class ClientHandler:
         self.public_key = load_public_key(PUBLIC_KEY_PATH)
         self.private_key = load_private_key(PRIVATE_KEY_PATH)
         self.running = True
-        self.session_key = Fernet(Fernet.generate_key())
+        self.session_key = None
         self.clientId = ""
 
     def _finish(self, msg):
@@ -105,7 +105,7 @@ class ClientHandler:
     def _receive_msg(self):
         cipher_data = self._receive_data()
         if cipher_data:
-            data = self.session_key.decrypt(cipher_data)
+            data = self.session_key.decrypt(cipher_data) # type: ignore
             message = json.loads(data.decode())
             return message
 
@@ -115,7 +115,7 @@ class ClientHandler:
         if content:
             data["content"] = content
         raw = json.dumps(data).encode() 
-        encrypted = key.encrypt(raw)
+        encrypted = key.encrypt(raw) # type: ignore
         self._send_data(encrypted, socket) if socket else self._send_data(encrypted)
 
     # Must sync all old messages sent to the topic and the possible ones after a subscribe
@@ -126,7 +126,7 @@ class ClientHandler:
                 self._format_and_send_msg('msg', topic, msg)
        
     # Create must send all locally saved public keys to the client, so the client can encrypt the session key of the topic it generated
-    # The Key MUST be in str, so don't forget to decode() and encode() to use them    
+    # The Topic Key is encrypted and saved as a b64 str  
     def _create(self, msg):
         topic = msg.get("topic")
         content = "failure"
@@ -153,15 +153,10 @@ class ClientHandler:
         with self.broker.lock:
             if topic in self.broker.topics:
                 b64_key = self.broker.topics_keys[topic][self.clientId]
-                                
-                print(f"{b64_key}")
-                print(f"[DEBUG] Sending cipher key length: {len(b64_key)}")
-                
                 self._format_and_send_msg('topic_key', topic, b64_key)
                 self._syncronize_msgs(topics_subs=topic)
                 self.broker.clients[self.clientId].append(topic)
                 content = "success"
-                
         self._format_and_send_msg("subscribe", topic, content)
 
     def _unsubscribe(self, msg):
@@ -196,7 +191,7 @@ class ClientHandler:
             while self.running:
                 print("-"*90)
                 print(f"Topics with msgs: {self.broker.topics}")
-                print(f'Client and topics: {self.broker.clients}')
+                print(f'\nClient and topics: {self.broker.clients}')
                 msg = self._receive_msg()
                 if msg:
                     cmd = msg["cmd"]
@@ -213,13 +208,9 @@ class ClientHandler:
                     else:
                         print(f"Stop sending gibberish")
         except Exception as e:
-            print(
-                f"[ERROR] Exception with client at {self.address[0]}:{self.address[1]}: {e}"
-            )
+            print(f"[ERROR] Exception with client at {self.address[0]}:{self.address[1]}: {e}")
             self.socket.close()
         finally:
             with self.broker.lock:
                 self.broker.clients_conn.pop(self.clientId, None)
-            print(
-                f"Connection terminated with client at {self.address[0]}:{self.address[1]}"
-            )
+            print(f"Connection terminated with client at {self.address[0]}:{self.address[1]}")
